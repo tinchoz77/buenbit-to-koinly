@@ -29,7 +29,7 @@ for row_num in range(2, xls.max_row+1):
         trx.set_amount(xls_monto, xls_moneda)
         trx.set_cost(xls_costored, xls_moneda)
 
-        print(f"completing Id: {xls_id} - Operacion: {xls_operation}")
+        print(f"+--> completing Id: {xls_id} - Operacion: {xls_operation}")
         if buenbit_operations[xls_operation]:
             report.add_trx(trx)
 
