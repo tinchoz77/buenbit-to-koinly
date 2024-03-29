@@ -25,12 +25,11 @@ for row_num in range(2, xls.max_row+1):
 
     if xls.cell(row=row_num, column=1).value is None:
         # complete previous transaction
-        xls_operation = last_operation
         trx.set_amount(xls_monto, xls_moneda)
         trx.set_cost(xls_costored, xls_moneda)
 
-        print(f"+--> completing Id: {xls_id} - Operacion: {xls_operation}")
-        if BUENBIT_OPERATIONS[xls_operation]:
+        print(f"+--> completing Id: {xls_id} - Operacion: {last_operation}")
+        if BUENBIT_OPERATIONS[last_operation]:
             report.add_trx(trx)
 
     else:
