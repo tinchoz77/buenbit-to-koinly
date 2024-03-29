@@ -4,7 +4,7 @@ import openpyxl
 report = KoinlyCustomFile()
 
 # Lists expected operation types and if the operation is reported in two lines
-buenbit_operations = {"CONVERSION": True,
+BUENBIT_OPERATIONS = {"CONVERSION": True,
                       "DEPOSITO": False,
                       "RETIRO": False,
                       "TRANSFERENCIA P2P RECIBIDA": False,
@@ -30,7 +30,7 @@ for row_num in range(2, xls.max_row+1):
         trx.set_cost(xls_costored, xls_moneda)
 
         print(f"+--> completing Id: {xls_id} - Operacion: {xls_operation}")
-        if buenbit_operations[xls_operation]:
+        if BUENBIT_OPERATIONS[xls_operation]:
             report.add_trx(trx)
 
     else:
@@ -40,7 +40,7 @@ for row_num in range(2, xls.max_row+1):
         xls_operation = xls.cell(row=row_num, column=3).value
         last_operation = xls_operation
 
-        if not xls_operation in buenbit_operations:
+        if not xls_operation in BUENBIT_OPERATIONS:
             raise Exception(f"Operation {xls_operation} not defined")
         
         print(f"Id: {xls_id} - Operacion: {xls_operation}")
@@ -48,7 +48,7 @@ for row_num in range(2, xls.max_row+1):
         trx.set_amount(xls_monto, xls_moneda)
         trx.set_cost(xls_costored, xls_moneda)
 
-        if not buenbit_operations[xls_operation]:
+        if not BUENBIT_OPERATIONS[xls_operation]:
             report.add_trx(trx)
 
 # Export koinly csv file
