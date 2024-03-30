@@ -15,11 +15,14 @@ class KoinlyCustomTransaction:
         self.label = operation
         self.description = ""
         self.tx_hash = ""
+        self.currencyhelper = CurrencyHelper()
 
     def serialize(self) -> str:
         return f'"{self.date}";{self.sent_amount};{self.sent_currency};{self.received_amount};{self.received_currency};{self.fee_amount};{self.fee_currency};{self.net_worth_amount};{self.net_worth_currency};{self.label};"{self.tx_hash}"'
     
     def set_amount(self, amount: float, currency: str):
+        currency = self.currencyhelper.changeCurrency(currency)
+        
         if amount < 0.0:
             self.sent_amount = abs(amount)
             self.sent_currency = currency
@@ -45,3 +48,13 @@ class KoinlyCustomFile:
             for trx in self.transactions:
                 f.write(trx.serialize() + "\n")
         f.close()
+
+class CurrencyHelper:
+    CURRENCY_MAP = {"ARS": "3622"}
+
+    def changeCurrency(self, currency):
+        if currency in self.CURRENCY_MAP:
+            return "ID:" + self.CURRENCY_MAP[currency]
+        else:
+            return currency
+
