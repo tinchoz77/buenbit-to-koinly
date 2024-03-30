@@ -32,7 +32,7 @@ def check_ars_mep(trx):
             trx.net_worth_currency = "USD"
 
 for row_num in range(2, xls.max_row+1):
-    print(f"\nLine {row_num}: ", end = "")
+    print(f"\nLine {row_num}: ", end="")
     add_trx = False
     xls_moneda = xls.cell(row=row_num, column=5).value
     xls_monto = xls.cell(row=row_num, column=6).value
@@ -43,7 +43,7 @@ for row_num in range(2, xls.max_row+1):
         trx.set_amount(xls_monto, xls_moneda)
         trx.set_cost(xls_costored, xls_moneda)
 
-        print(f"+--> completing Id: {xls_id} - Operacion: {last_operation}", end= "")
+        print(f"+--> completing Id: {xls_id} - Operacion: {last_operation}", end="")
         add_trx = True
     else:
         # new transaction
@@ -55,7 +55,7 @@ for row_num in range(2, xls.max_row+1):
         if not xls_operation in BUENBIT_OPERATIONS:
             raise Exception(f"Operation {xls_operation} not defined")
         
-        print(f"Id: {xls_id} - Operacion: {xls_operation}", end= "")
+        print(f"Id: {xls_id} - Operacion: {xls_operation}", end="")
         trx = KoinlyCustomTransaction(xls_id, xls_date, xls_operation)
         trx.set_amount(xls_monto, xls_moneda)
         trx.set_cost(xls_costored, xls_moneda)
@@ -68,6 +68,6 @@ for row_num in range(2, xls.max_row+1):
         report.add_trx(trx)
 
 # Export koinly csv file
-print("Writing file...", end = "")
+print("Writing file...", end="")
 report.write("buenbit_koinly_report.csv")
 print(" done.")

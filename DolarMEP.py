@@ -12,7 +12,7 @@ class DolarMEP:
     def mepdate2str(self, date):
         return datetime.strftime(date, self.DATE_FORMAT)
 
-    def __init__(self, filename= "dolar_mep.csv") -> None:
+    def __init__(self, filename="dolar_mep.csv") -> None:
         with open(filename) as csvfile:
             cotizaciones = csv.reader(csvfile, delimiter=';')
             for cotizacion in cotizaciones:
