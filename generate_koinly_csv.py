@@ -1,7 +1,9 @@
 from Koinly import *
+import DolarMEP as mep
 import openpyxl
 
 report = KoinlyCustomFile()
+mep = mep.DolarMEP()
 
 # Lists expected operation types and if the operation is reported in two lines
 BUENBIT_OPERATIONS = {"CONVERSION": True,
@@ -13,10 +15,22 @@ BUENBIT_OPERATIONS = {"CONVERSION": True,
                       "CASHBACK": False}
 
 # Define variable to load the buenbit report
-xls = openpyxl.load_workbook("buenbit_sample_report.xlsx").active
+xls = openpyxl.load_workbook("activity_report.xlsx").active
 
 # Loop through every transaction (assuming there's not any failed trx)
 # TODO: Check for FAILED status 
+def check_ars_mep(trx):
+    if trx.sent_currency == "ID:3622":
+        valor_mep = mep.find_mep(trx.date)
+        if valor_mep is not None:
+            trx.net_worth_amount = trx.sent_amount / valor_mep
+            trx.net_worth_currency = "USD"
+    if trx.received_currency == "ID:3622":
+        valor_mep = mep.find_mep(trx.date)
+        if valor_mep is not None:
+            trx.net_worth_amount = trx.received_amount / valor_mep
+            trx.net_worth_currency = "USD"
+
 for row_num in range(2, xls.max_row+1):
     print(f"Line {row_num}: ", end = "")
     xls_moneda = xls.cell(row=row_num, column=5).value
@@ -30,6 +44,7 @@ for row_num in range(2, xls.max_row+1):
 
         print(f"+--> completing Id: {xls_id} - Operacion: {last_operation}")
         if BUENBIT_OPERATIONS[last_operation]:
+            check_ars_mep(trx)
             report.add_trx(trx)
 
     else:
@@ -48,6 +63,7 @@ for row_num in range(2, xls.max_row+1):
         trx.set_cost(xls_costored, xls_moneda)
 
         if not BUENBIT_OPERATIONS[xls_operation]:
+            check_ars_mep(trx)
             report.add_trx(trx)
 
 # Export koinly csv file
