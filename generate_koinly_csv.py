@@ -69,6 +69,6 @@ for row_num in range(2, xls.max_row+1):
         report.add_trx(trx)
 
 # Export koinly csv file
-print("Writing file...", end="")
+print("\n\nWriting file...", end="")
 report.write("buenbit_koinly_report.csv")
 print(" done.")
