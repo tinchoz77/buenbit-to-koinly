@@ -21,7 +21,7 @@ class KoinlyCustomTransaction:
         return f'"{self.date}";{self.sent_amount};{self.sent_currency};{self.received_amount};{self.received_currency};{self.fee_amount};{self.fee_currency};{self.net_worth_amount};{self.net_worth_currency};{self.label};"{self.tx_hash}"'
     
     def set_amount(self, amount: float, currency: str):
-        currency = self.currencyhelper.changeCurrency(currency)
+        currency = self.currencyhelper.symbol2id(currency)
         
         if amount < 0.0:
             self.sent_amount = abs(amount)
@@ -52,7 +52,7 @@ class KoinlyCustomFile:
 class CurrencyHelper:
     CURRENCY_MAP = {"ARS": "3622"}
 
-    def changeCurrency(self, currency):
+    def symbol2id(self, currency):
         if currency in self.CURRENCY_MAP:
             return "ID:" + self.CURRENCY_MAP[currency]
         else:
