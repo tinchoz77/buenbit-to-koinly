@@ -37,6 +37,7 @@ for row_num in range(2, xls.max_row+1):
     xls_moneda = xls.cell(row=row_num, column=5).value
     xls_monto = xls.cell(row=row_num, column=6).value
     xls_costored = xls.cell(row=row_num, column=7).value
+    xls_txid = xls.cell(row=row_num, column=8).value
 
     if xls.cell(row=row_num, column=1).value is None:
         # complete previous transaction
@@ -56,7 +57,7 @@ for row_num in range(2, xls.max_row+1):
             raise Exception(f"Operation {xls_operation} not defined")
         
         print(f"Id: {xls_id} - Operacion: {xls_operation}", end="")
-        trx = KoinlyCustomTransaction(xls_id, xls_date, xls_operation)
+        trx = KoinlyCustomTransaction(xls_id, xls_date, xls_operation, xls_txid)
         trx.set_amount(xls_monto, xls_moneda)
         trx.set_cost(xls_costored, xls_moneda)
 
